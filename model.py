@@ -308,17 +308,9 @@ class MSLNet(nn.Module):
         self.k = k
         # embedding
         self.roberta_layer = RobertaModel.from_pretrained("roberta-base")
-        # C1D
+        # Instance Encoder
         self.conv1 = nn.Conv1d(768, 768, kernel_size=3, stride=1, padding=1)
         self.pool1 = nn.MaxPool1d(2, stride=2, ceil_mode=True)
-        if k>=3 and k<=4:
-            self.conv2 = nn.Conv1d(768, 768, kernel_size=3, stride=1, padding=1)
-            self.pool2 = nn.MaxPool1d(2, stride=2, ceil_mode=True)
-        elif k>=5 and k<=6:
-            self.conv2 = nn.Conv1d(768, 768, kernel_size=3, stride=1, padding=1)
-            self.pool2 = nn.MaxPool1d(2, stride=2, ceil_mode=True)
-            self.conv3 = nn.Conv1d(768, 768, kernel_size=3, stride=1, padding=1)
-            self.pool3 = nn.MaxPool1d(2, stride=2, ceil_mode=True)
         # Transformer-based Multi-SequenceLearning Network
         self.transformer_msl = MSLTransformer(
             seq_length=winlen-k+1,
@@ -339,17 +331,8 @@ class MSLNet(nn.Module):
             xi = outputs["pooler_output"]
 
             xi_unfold = xi.unfold(0, self.k, 1)
-
             xi_unfold = self.conv1(xi_unfold)
             xi_unfold = self.pool1(xi_unfold)
-            if self.k>=3 and self.k<=4:
-                xi_unfold = self.conv2(xi_unfold)
-                xi_unfold = self.pool2(xi_unfold)
-            elif self.k>=5 and self.k<=6:
-                xi_unfold = self.conv2(xi_unfold)
-                xi_unfold = self.pool2(xi_unfold)
-                xi_unfold = self.conv3(xi_unfold)
-                xi_unfold = self.pool3(xi_unfold)
             xi_unfold = xi_unfold.squeeze()
 
             x = torch.cat((x, xi_unfold.unsqueeze(0)))
