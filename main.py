@@ -155,11 +155,11 @@ is_train = 1
 if __name__ == '__main__':
     set_seed(seed)
 
-    df_train = pd.read_csv("./dataset/train.csv", names=names22+names22_, header=0, index_col=False)
+    df_train = pd.read_csv("./train_data/train.csv", names=names22+names22_, header=0, index_col=False)
     train_dataset = Train_Loader(df_train, maxlen=maxlen, winlen=winlen)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=collate_train, drop_last=True)
 
-    df_val = pd.read_csv("./dataset/val.csv", names=names22, header=0, index_col=False)
+    df_val = pd.read_csv("./train_data/val.csv", names=names22, header=0, index_col=False)
     val_dataset = Test_Loader(df_val, maxlen=maxlen, winlen=winlen)
     val_loader = DataLoader(val_dataset, batch_size=2*batch_size, shuffle=False, collate_fn=collate_test, drop_last=True)
 
@@ -182,7 +182,7 @@ if __name__ == '__main__':
 
     # test
     print("========================================================")
-    df_test = pd.read_csv("./dataset/test.csv", names=names22, header=0, index_col=False)
+    df_test = pd.read_csv("./train_data/test.csv", names=names22, header=0, index_col=False)
     test_dataset = Test_Loader(df_test, maxlen=maxlen, winlen=winlen)
     test_loader = DataLoader(test_dataset, batch_size=2*batch_size, shuffle=False, collate_fn=collate_test, drop_last=True)
     checkpoint = torch.load(best_model_filename)
