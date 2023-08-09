@@ -12,12 +12,8 @@ from transformers import AdamW, get_linear_schedule_with_warmup
 torch.set_printoptions(profile="full")
 
 #print(torch.__version__)
-names22 = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14","t15","t16","t17","t18","t19","t20","t21","t22",
-           "l1","l2","l3","l4","l5","l6","l7","l8","l9","l10","l11","l12","l13","l14","l15","l16","l17","l18","l19","l20","l21","l22",
-           "label","phase","project"]
-names22_ = ["t31","t32","t33","t34","t35","t36","t37","t38","t39","t40","t41","t42","t43","t44","t45","t46","t47","t48","t49","t50","t51","t52",
-            "l31","l32","l33","l34","l35","l36","l37","l38","l39","l40","l41","l42","l43","l44","l45","l46","l47","l48","l49","l50","l51","l52",
-            "label_n","phase_n","project_n"]
+names22 = ["t1","t2","t3","t4","t5","t6","t7","t8","t9","t10","t11","t12","t13","t14","t15","t16","t17","t18","t19","t20","t21","t22","label"]
+names22_ = ["t31","t32","t33","t34","t35","t36","t37","t38","t39","t40","t41","t42","t43","t44","t45","t46","t47","t48","t49","t50","t51","t52","label_n"]
 
 batch_size = 8
 winlen = 22
