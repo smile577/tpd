@@ -166,7 +166,7 @@ if __name__ == '__main__':
     model = MSLNet(layer, winlen, k).to(device)
     optimizer = AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     t_total = len(train_loader)* eps  # Necessary to take into account Gradient accumulation
-    warm_up_ratio = 0.1 # 定义要预热的step 
+    warm_up_ratio = 0.1 
     lr_scheduler = get_linear_schedule_with_warmup(optimizer=optimizer, num_warmup_steps=warm_up_ratio*t_total, num_training_steps=t_total)
     
     criterion_msl = MSL
