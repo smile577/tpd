@@ -37,14 +37,14 @@ def train(epoch, k, model, optimizer, scheduler, criterion_msl, criterion_bce, t
     average_msl_loss = 0
     average_bce_loss = 0
     for batch_idx, batch in tqdm(enumerate(train_loader), desc="Training", total=len(train_loader)):
-        wins_nodes_ids = torch.cat([batch["txts_ids"], batch["txts_ids_n"]], dim=0).to(device)
-        wins_nodes_mask = torch.cat([batch["txts_mask"], batch["txts_mask_n"]], dim=0).to(device)
-        wins_nodes_labels = torch.cat([batch["nodes_labels"], batch["nodes_labels_n"]], dim=0).to(device)
+        wins_txts_ids = torch.cat([batch["txts_ids"], batch["txts_ids_n"]], dim=0).to(device)
+        wins_txts_mask = torch.cat([batch["txts_mask"], batch["txts_mask_n"]], dim=0).to(device)
+        wins_nodes_mask = torch.cat([batch["nodes_mask"], batch["nodes_mask_n"]], dim=0).to(device)
         wins_label = torch.cat([batch["wins_label"], batch["wins_label_n"]], dim=0).to(device)
 
-        wins_nodes_pred, wins_pred = model(wins_nodes_ids, wins_nodes_mask, device)
+        wins_nodes_pred, wins_pred = model(wins_txts_ids, wins_txts_mask, device)
 
-        msl_loss = criterion_msl(wins_nodes_pred, wins_nodes_labels, batch_size, k, winlen, device)
+        msl_loss = criterion_msl(wins_nodes_pred, wins_nodes_mask, batch_size, k, winlen, device)
         average_msl_loss += msl_loss
         bce_loss = criterion_bce(wins_pred, wins_label.float())
         average_bce_loss += loss_prop*bce_loss
@@ -66,10 +66,10 @@ def val_abnormal(epoch, best_f1_score, loss, model, val_loader):
     model_filename = ""
     with torch.no_grad():
         for idx, batch in tqdm(enumerate(val_loader), desc="Testing", total=len(val_loader)):
-            wins_nodes_ids = batch["txts_ids"].to(device)
-            wins_nodes_mask = batch["txts_mask"].to(device)
+            wins_txts_ids = batch["txts_ids"].to(device)
+            wins_txts_mask = batch["txts_mask"].to(device)
 
-            wins_nodes_pred, wins_pred = model(wins_nodes_ids, wins_nodes_mask, device)
+            wins_nodes_pred, wins_pred = model(wins_txts_ids, wins_txts_mask, device)
 
             pred_int = []
             for i in range(wins_nodes_pred.shape[0]):
