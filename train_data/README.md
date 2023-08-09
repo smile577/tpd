@@ -1,1 +1,1 @@
-Datasets to train, dev and test sets
+The dataset has been divided into train, valid, and test sets.
